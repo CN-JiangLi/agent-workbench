@@ -9,7 +9,7 @@
 - 占位符统一使用语义化格式，如 `<接口名>`、`<query>`。
 - 示例默认可复制，按需替换占位符即可执行。
 
-## Superpowers Skill 使用指南
+## Superpowers
 
 ### `brainstorming`（构思与设计）
 
@@ -74,7 +74,7 @@
 请用 finishing-a-development-branch 帮我完成这个分支的收尾流程。
 ```
 
-## Prompt Optimizer（`promptenhancer`）使用流程
+## Prompt Optimizer
 
 ### 第 1 轮：提交原始提示词
 
@@ -94,7 +94,7 @@
 请继续调用 promptenhancer，optimizedPrompt="<按第一轮指南优化后的提示词>"
 ```
 
-## Apifox MCP 使用
+## Apifox
 
 ### 刷新项目 OAS
 
@@ -123,12 +123,37 @@
 我需要在用户信息返回中增加 avatar 字段，请根据现有数据模型告诉我需要同步修改哪些代码。
 ```
 
-## Memory MCP 使用
+## Memory
 
 ### 常用能力
 
-- 存储记忆：`memory-service.add_memory`
-- 检索记忆：`memory-service.search_memory`
+- 存储：`memory_store`、`memory_store_session`
+- 检索：`memory_search`、`memory_list`
+- 更新/删除：`memory_update`、`memory_delete`
+- 健康/统计：`memory_health`、`memory_stats`
+
+### 工具列表（已按本地 `user-memory` 最新配置更新）
+
+- 记忆写入与检索：
+  - `memory_store`：存储单条记忆（支持 `conversation_id` 与 `tags`）。
+  - `memory_store_session`：按完整会话存储（`turns` 数组）。
+  - `memory_search`：语义/精确/混合检索（支持时间、标签、质量加权）。
+  - `memory_list`：分页列出记忆（支持 `tags`、`memory_type` 过滤）。
+- 记忆维护：
+  - `memory_update`：按 `content_hash` 更新元数据（`tags`、`memory_type` 等）。
+  - `memory_delete`：按 hash、标签、时间范围删除（支持 `dry_run`）。
+  - `memory_cleanup`：重复记忆清理。
+- 冲突与质量：
+  - `memory_conflicts`：查看冲突记忆。
+  - `memory_resolve`：解决冲突（`winner_hash` / `loser_hash`）。
+  - `memory_quality`：质量评分与分析（`rate/get/analyze`）。
+- 图谱与沉淀：
+  - `memory_graph`：关联图谱查询（`connected/path/subgraph`）。
+  - `memory_harvest`：从会话抽取决策、Bug、约定等记忆。
+  - `memory_ingest`：导入文件/目录到记忆库（PDF/TXT/MD/JSON）。
+- 系统状态：
+  - `memory_health`：数据库健康检查。
+  - `memory_stats`：缓存与性能统计。
 
 ### 快速示例
 
@@ -140,13 +165,16 @@
 ### 手动控制工具示例
 
 ```text
-@memory-service add_memory content="记住：数据库连接字符串是 postgresql://user:pass@localhost/db"
-@memory-service search_memory query="数据库连接字符串"
-@memory-service get_all_memories
-@memory-service delete_memory memory_id="<memory_id>"
+@user-memory memory_store content="记住：数据库连接字符串是 postgresql://user:pass@localhost/db" metadata={"tags":"database,connection"}
+@user-memory memory_search query="数据库连接字符串" mode="semantic"
+@user-memory memory_list page=1 page_size=20
+@user-memory memory_update content_hash="<content_hash>" updates={"tags":"database,connection,important"}
+@user-memory memory_delete content_hash="<content_hash>" dry_run=true
+@user-memory memory_health
+@user-memory memory_stats
 ```
 
-## FileSystem MCP 使用
+## FileSystem
 
 ### `read_text_file`
 

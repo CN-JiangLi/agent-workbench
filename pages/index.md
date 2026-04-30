@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "MCP Docs"
-  text: "MCP 工具使用文档中心"
+  name: "MCP Docs.Kaiser.du"
+  text: "MCP 使用文档中心"
   tagline: 面向 Agent 的本地 AI 工程化增强体系（RAG + Tool Use + Agentic Workflow）。
   actions:
     - theme: brand

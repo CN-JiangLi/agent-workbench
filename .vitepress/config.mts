@@ -19,6 +19,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '快速开始', link: '/quick-start/quick-start' },
       { text: 'MCP 使用手册', link: '/mcp/mcp-handbook' },
+      { text: 'MCP 工作流', link: '/mcp/mcp-workflow' },
       { text: '示例', link: '/examples/markdown-examples' }
     ],
 
@@ -38,12 +39,20 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'MCP 使用手册（团队内部）', link: '/mcp/mcp-handbook' },
+          { text: 'MCP 自动工作流规则', link: '/mcp/mcp-workflow' },
           { text: '使用原则', link: '/mcp/mcp-handbook#使用原则' },
           { text: 'Superpowers Skill 使用指南', link: '/mcp/mcp-handbook#superpowers-skill-使用指南' },
           { text: 'Prompt Optimizer（promptenhancer）使用流程', link: '/mcp/mcp-handbook#prompt-optimizer-promptenhancer-使用流程' },
           { text: 'Apifox MCP 使用', link: '/mcp/mcp-handbook#apifox-mcp-使用' },
           { text: 'Memory MCP 使用', link: '/mcp/mcp-handbook#memory-mcp-使用' },
-          { text: 'FileSystem MCP 使用', link: '/mcp/mcp-handbook#filesystem-mcp-使用' }
+          { text: 'FileSystem MCP 使用', link: '/mcp/mcp-handbook#filesystem-mcp-使用' },
+          { text: '优先级 0：对话开始', link: '/mcp/mcp-workflow#优先级-0对话开始' },
+          { text: '优先级 1：Prompt 优化判断', link: '/mcp/mcp-workflow#优先级-1prompt-优化判断' },
+          { text: '优先级 2：场景自动路由', link: '/mcp/mcp-workflow#优先级-2场景自动路由' },
+          { text: '优先级 2.5：记忆存储去重规则', link: '/mcp/mcp-workflow#优先级-25记忆存储去重规则' },
+          { text: '优先级 3：任务完成', link: '/mcp/mcp-workflow#优先级-3任务完成' },
+          { text: '澄清与回退规则', link: '/mcp/mcp-workflow#澄清与回退规则' },
+          { text: '异常处理汇总', link: '/mcp/mcp-workflow#异常处理汇总' }
         ]
       },
       {

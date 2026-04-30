@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "MCP Docs.Kaiser.du"
+  name: "Ai Workbench.Agent"
   text: "MCP 使用文档中心"
   tagline: 面向 Agent 的本地 AI 工程化增强体系（RAG + Tool Use + Agentic Workflow）。
   actions:

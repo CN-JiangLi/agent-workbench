@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "MCP Docs",
+  title: "Ai Workbench",
   description: "团队内部 MCP 工具与使用规范文档",
   srcDir: "pages",
   outDir: "dist",

@@ -36,7 +36,7 @@ alwaysApply: true
 - `memory_search` → `promptenhancer`（如需）→ 方案设计 → 代码实现 → `memory_store`（此处即为优先级 3 的执行，不再重复触发）
 
 ### API / 接口开发
-- `refresh_project_oas_5htfn2` → `read_project_oas_5htfn2` → 生成代码
+- `refresh_project_oas_{动态}` → `read_project_oas_{动态}` → 生成代码
 - 若 refresh 失败，输出：「刷新 OAS 失败，尝试读取本地缓存版本。错误信息：[具体原因]」→ 回退为读取已有 OAS
 - 若回退也失败，基于现有代码上下文继续，并显式列出假设
 

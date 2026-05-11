@@ -86,7 +86,10 @@ function replay() {
         在首页流式渲染。规则原文见
         <a href="/agentic-workflow/full-workflow">Agentic Full-Workflow</a>。
       </p>
-      <button type="button" class="aw-home-demo__replay" @click="replay">重新播放打字机</button>
+      <button type="button" class="aw-home-demo__replay" @click="replay">
+        <span class="aw-home-demo__replay-icon material-symbols-outlined" aria-hidden="true">replay</span>
+        重新播放流
+      </button>
       <span v-if="streamingDone" class="aw-home-demo__done">（已完成）</span>
     </div>
     <div ref="panelRef" class="aw-home-demo__panel markstream-vue">
@@ -139,6 +142,12 @@ function replay() {
   font-size: 0.875rem;
 }
 
+.aw-home-demo__replay-icon {
+  font-size: 16px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
 .aw-home-demo__replay:hover {
   border-color: var(--vp-c-brand-1);
   color: var(--vp-c-brand-1);
@@ -155,8 +164,6 @@ function replay() {
   border-radius: 12px;
   padding: 1rem 1.25rem 1.25rem;
   background: var(--vp-c-bg-soft);
-  /* 首屏内固定可视高度；仅内容溢出时出现滚动条（不用 stable 避免常驻占位） */
-  max-height: clamp(220px, 36vh, 480px);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;

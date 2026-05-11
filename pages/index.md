@@ -23,3 +23,10 @@ features:
     details: 通过 VitePress 构建清晰导航与目录结构，便于持续扩展和团队协作。
 ---
 
+## Agentic 工作流 · 流式演示
+
+下方由 [markstream-vue](https://markstream-vue.simonhe.me/) 打字机渲染 `pages/home/agentic-workflow-stream-demo.md`（规则见 [Full-Workflow](/agentic-workflow/full-workflow)）。
+
+<ClientOnly>
+  <AgenticWorkflowHomeDemo />
+</ClientOnly>

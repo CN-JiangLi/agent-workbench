@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "markstream-vue": "^0.0.14-beta.7"
+  },
   "devDependencies": {
     "vitepress": "^1.6.3"
   },

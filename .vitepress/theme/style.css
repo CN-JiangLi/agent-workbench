@@ -3,6 +3,11 @@
  * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
  */
 
+/* 首页：避免演示区/MarkStream 内容撑出整页水平滚动条 */
+.VPHome {
+  overflow-x: clip;
+}
+
 /**
  * Colors
  *
@@ -198,4 +203,3 @@
   font-size: 12px;
   padding-left: 16px !important;
 }
-

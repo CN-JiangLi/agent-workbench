@@ -1,11 +1,45 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useData } from "vitepress";
 import AgenticWorkflowHomeDemo from "./AgenticWorkflowHomeDemo.vue";
 import { useLocalePath } from "../utils/locale-path";
 
 const { isDark, theme, lang } = useData();
 const { localePath } = useLocalePath();
+
+const visitCount = ref<number | null>(null);
+
+function visitsEndpoint(): string {
+  const b = (import.meta.env.VITE_VISIT_API_URL as string | undefined)?.trim();
+  if (!b) return "/api/visits";
+  return `${b.replace(/\/$/, "")}/api/visits`;
+}
+
+onMounted(async () => {
+  try {
+    const res = await fetch(visitsEndpoint(), {
+      method: "POST",
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) return;
+    const data = (await res.json()) as { count?: unknown };
+    if (typeof data.count === "number" && Number.isFinite(data.count) && data.count >= 0) {
+      visitCount.value = Math.floor(data.count);
+    }
+  } catch {
+    /* API offline or blocked */
+  }
+});
+
+const visitDisplay = computed(() => {
+  const n = visitCount.value;
+  if (n === null) return "";
+  try {
+    return new Intl.NumberFormat(lang.value, { maximumFractionDigits: 0 }).format(n);
+  } catch {
+    return String(n);
+  }
+});
 
 const githubHref = computed(() => {
   const links = theme.value.socialLinks ?? [];
@@ -48,6 +82,7 @@ const copy = computed(() =>
         privacy: "Privacy",
         terms: "Terms",
         discord: "Discord",
+        visitBadge: "Home visits",
       }
     : {
         navAria: "主导航",
@@ -81,7 +116,8 @@ const copy = computed(() =>
         privacy: "隐私",
         terms: "条款",
         discord: "Discord",
-      },
+        visitBadge: "首页访问",
+      }
 );
 
 function toggleDark() {
@@ -204,6 +240,13 @@ function toggleDark() {
     <footer class="stitch-footer">
       <div class="stitch-footer__inner">
         <span class="stitch-footer__copy">{{ copy.footerCopy }}</span>
+        <span
+          v-if="visitCount !== null"
+          class="stitch-footer__visits"
+          aria-live="polite"
+        >
+          {{ copy.visitBadge }} · {{ visitDisplay }}
+        </span>
         <div class="stitch-footer__links">
           <a class="stitch-footer__link" href="#">{{ copy.privacy }}</a>
           <a class="stitch-footer__link" href="#">{{ copy.terms }}</a>
@@ -620,6 +663,15 @@ function toggleDark() {
 .stitch-footer__copy {
   font-size: 13px;
   color: var(--stitch-on-surface);
+}
+
+.stitch-footer__visits {
+  font-family: var(--stitch-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--stitch-on-surface-variant);
+  white-space: nowrap;
 }
 
 .stitch-footer__links {

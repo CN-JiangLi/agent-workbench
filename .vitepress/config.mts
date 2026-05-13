@@ -200,6 +200,16 @@ export default defineConfig({
   ignoreDeadLinks: true,
   cleanUrls: true,
   head: sharedHead,
+  vite: {
+    server: {
+      proxy: {
+        "/api/visits": {
+          target: "http://127.0.0.1:3948",
+          changeOrigin: true,
+        },
+      },
+    },
+  },
   locales: {
     root: {
       label: "简体中文",

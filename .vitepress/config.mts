@@ -1,5 +1,4 @@
 import { defineConfig } from "vitepress";
-import { visitApiDevPlugin } from "./vite-plugin-visit-api-dev";
 
 /** Prefix paths for the `zh` locale (VPLink does not auto-inject `/zh/` for theme nav/sidebar). */
 function zhRoute(path: string): string {
@@ -203,9 +202,6 @@ export default defineConfig({
   ignoreDeadLinks: true,
   cleanUrls: true,
   head: sharedHead,
-  vite: {
-    plugins: [visitApiDevPlugin()],
-  },
   locales: {
     root: {
       label: "English",

@@ -1,172 +1,172 @@
-# MCP 使用手册（团队内部）
+# MCP Handbook (Internal)
 
-源文档：`Markdown[MCP]/MCP_use.md`
+Source: `Markdown[MCP]/MCP_use.md`
 
-## 使用原则 {#使用原则}
+## Usage principles {#usage-principles}
 
-- 优先说明业务目标，再指定工具与参数。
-- 工具名、参数名、命令统一使用反引号。
-- 占位符统一使用语义化格式，如 `<接口名>`、`<query>`。
-- 示例默认可复制，按需替换占位符即可执行。
+- State the business goal first, then specify tools and parameters.
+- Use backticks consistently for tool names, parameter names, and commands.
+- Use semantic placeholders such as `<operationId>` and `<query>`.
+- Examples should be copy-paste ready; replace placeholders as needed.
 
 ## Superpowers {#superpowers}
 
-### `brainstorming`（构思与设计）
+### `brainstorming` (ideation and design)
 
-在创建新功能前，先明确需求、约束和设计方案。  
-触发词：`用 brainstorming 帮我设计这个功能`
+Before building a new feature, clarify requirements, constraints, and design options.  
+Trigger phrase: `use brainstorming to help me design this feature`
 
 ```text
-请先使用 brainstorming，帮我梳理这个需求并给出方案对比。
+Please use brainstorming first to clarify this requirement and compare options.
 ```
 
-### `writing-plans`（任务拆解）
+### `writing-plans` (task breakdown)
 
-将复杂任务拆成可执行步骤，避免直接开写导致返工。  
-触发词：`先走 writing-plans，不要直接写代码`
+Split complex work into executable steps to avoid rework from jumping straight to code.  
+Trigger phrase: `run writing-plans first, do not write code yet`
 
 ```text
-请先走 writing-plans，把这个需求拆成可执行步骤和验收标准。
+Please run writing-plans first and break this requirement into executable steps with acceptance criteria.
 ```
 
-### `test-driven-development`（测试驱动）
+### `test-driven-development` (TDD)
 
-按红-绿-重构流程开发，先写失败测试再写实现。  
-触发词：`按 test-driven-development 来实现`
+Follow red–green–refactor: write a failing test first, then implement.  
+Trigger phrase: `implement this using test-driven-development`
 
 ```text
-请按 test-driven-development 实现这个功能，先补测试再写代码。
+Please implement this feature using test-driven-development: add tests first, then code.
 ```
 
-### `systematic-debugging`（根因定位）
+### `systematic-debugging` (root cause)
 
-遇到报错时进行结构化排查，避免猜测式修复。  
-触发词：`用 systematic-debugging 看下这个报错`
+When errors occur, troubleshoot in a structured way instead of guessing.  
+Trigger phrase: `use systematic-debugging on this error`
 
 ```text
-请使用 systematic-debugging 帮我定位这个报错的根因。
+Please use systematic-debugging to find the root cause of this error.
 ```
 
-### `verification-before-completion`（完成前验证）
+### `verification-before-completion` (verify before done)
 
-在声明“已完成”前，执行完整验证流程。  
-触发词：`请在改动完成后进行彻底验证`
+Before claiming “done”, run a full verification pass.  
+Trigger phrase: `after changes, verify thoroughly before concluding`
 
 ```text
-请在完成后使用 verification-before-completion，验证通过再给我结论。
+After finishing, please use verification-before-completion and only conclude once verification passes.
 ```
 
-### `requesting-code-review`（代码评审）
+### `requesting-code-review` (code review)
 
-在开发结束后发起系统性代码审查，检查质量与设计一致性。  
-触发词：`完成任务后，请帮我评审我的代码`
+After development, run a structured review for quality and design alignment.  
+Trigger phrase: `when done, review my code`
 
 ```text
-请使用 requesting-code-review 对本次改动做完整评审。
+Please use requesting-code-review to review all changes from this task.
 ```
 
-### `finishing-a-development-branch`（分支收尾）
+### `finishing-a-development-branch` (branch wrap-up)
 
-在功能开发完成后，规范化执行分支收尾（合并/PR/清理）。  
-触发词：`功能完成了，帮我收尾这个分支`
+After a feature is complete, normalize merge/PR/cleanup.  
+Trigger phrase: `feature is done, help me close out this branch`
 
 ```text
-请用 finishing-a-development-branch 帮我完成这个分支的收尾流程。
+Please use finishing-a-development-branch to complete the wrap-up for this branch.
 ```
 
 ## Prompt Optimizer {#prompt-optimizer}
 
-### 第 1 轮：提交原始提示词
+### Round 1: submit the raw prompt
 
-用途：输入原始需求，获取提示词优化指南。  
-输入参数：`originalPrompt`
+Purpose: send the raw requirement and get optimization guidance.  
+Input: `originalPrompt`
 
 ```text
-请先使用 promptenhancer 工具，originalPrompt="<你的原始需求>"
+Please call the promptenhancer tool first with originalPrompt="<your raw requirement>"
 ```
 
-### 第 2 轮：提交优化后提示词
+### Round 2: submit the optimized prompt
 
-用途：将你根据指南整理后的提示词再次提交，获得可直接使用的最终提示词。  
-输入参数：`optimizedPrompt`
+Purpose: send your revised prompt and receive a final prompt ready to use.  
+Input: `optimizedPrompt`
 
 ```text
-请继续调用 promptenhancer，optimizedPrompt="<按第一轮指南优化后的提示词>"
+Please call promptenhancer again with optimizedPrompt="<prompt revised per round-1 guidance>"
 ```
 
 ## Apifox {#apifox}
 
-### 刷新项目 OAS
+### Refresh project OAS
 
-用途：刷新 API 文档。  
-调用：`refresh_project_oas_<project_id>`
+Purpose: refresh API documentation.  
+Call: `refresh_project_oas_<project_id>`
 
 ```text
-请刷新我们的 API 文档，调用 refresh_project_oas_v5npvj。
+Please refresh our API docs by calling refresh_project_oas_v5npvj.
 ```
 
-### 读取 OAS 生成接口代码
+### Read OAS to generate client code
 
-用途：基于项目 API 文档生成 `<接口名>` 的 Model 和 Service 层代码。  
-调用：`read_project_oas_<project_id>`
+Purpose: from the project API spec, generate Model and Service layers for `<operationId>`.  
+Call: `read_project_oas_<project_id>`
 
 ```text
-请根据项目 API 文档，生成 <接口名> 的 Model 和 Service 层代码。
+Based on the project API spec, generate Model and Service code for <operationId>.
 ```
 
-### 读取 OAS 关联资源并分析联动修改
+### Read OAS referenced resources for impact analysis
 
-用途：基于现有模型评估字段变更影响范围。  
-调用：`read_project_oas_ref_resources_<project_id>`
+Purpose: assess blast radius of schema changes from existing models.  
+Call: `read_project_oas_ref_resources_<project_id>`
 
 ```text
-我需要在用户信息返回中增加 avatar 字段，请根据现有数据模型告诉我需要同步修改哪些代码。
+I need to add an avatar field to the user profile response. Based on the current data model, tell me which code must change together.
 ```
 
 ## Memory {#memory}
 
-### 常用能力
+### Common capabilities
 
-- 存储：`memory_store`、`memory_store_session`
-- 检索：`memory_search`、`memory_list`
-- 更新/删除：`memory_update`、`memory_delete`
-- 健康/统计：`memory_health`、`memory_stats`
+- Store: `memory_store`, `memory_store_session`
+- Search: `memory_search`, `memory_list`
+- Update/delete: `memory_update`, `memory_delete`
+- Health/stats: `memory_health`, `memory_stats`
 
-### 工具列表（已按本地 `user-memory` 最新配置更新）
+### Tool list (aligned with local `user-memory` config)
 
-- 记忆写入与检索：
-  - `memory_store`：存储单条记忆（支持 `conversation_id` 与 `tags`）。
-  - `memory_store_session`：按完整会话存储（`turns` 数组）。
-  - `memory_search`：语义/精确/混合检索（支持时间、标签、质量加权）。
-  - `memory_list`：分页列出记忆（支持 `tags`、`memory_type` 过滤）。
-- 记忆维护：
-  - `memory_update`：按 `content_hash` 更新元数据（`tags`、`memory_type` 等）。
-  - `memory_delete`：按 hash、标签、时间范围删除（支持 `dry_run`）。
-  - `memory_cleanup`：重复记忆清理。
-- 冲突与质量：
-  - `memory_conflicts`：查看冲突记忆。
-  - `memory_resolve`：解决冲突（`winner_hash` / `loser_hash`）。
-  - `memory_quality`：质量评分与分析（`rate/get/analyze`）。
-- 图谱与沉淀：
-  - `memory_graph`：关联图谱查询（`connected/path/subgraph`）。
-  - `memory_harvest`：从会话抽取决策、Bug、约定等记忆。
-  - `memory_ingest`：导入文件/目录到记忆库（PDF/TXT/MD/JSON）。
-- 系统状态：
-  - `memory_health`：数据库健康检查。
-  - `memory_stats`：缓存与性能统计。
+- Write and retrieve:
+  - `memory_store`: store one memory (supports `conversation_id`, `tags`).
+  - `memory_store_session`: store a full session (`turns` array).
+  - `memory_search`: semantic/exact/hybrid search (time, tags, quality weighting).
+  - `memory_list`: paginated listing (`tags`, `memory_type` filters).
+- Maintenance:
+  - `memory_update`: update metadata by `content_hash` (`tags`, `memory_type`, etc.).
+  - `memory_delete`: delete by hash, tags, time range (supports `dry_run`).
+  - `memory_cleanup`: dedupe / cleanup noisy memories.
+- Conflicts and quality:
+  - `memory_conflicts`: list conflicting memories.
+  - `memory_resolve`: resolve conflicts (`winner_hash` / `loser_hash`).
+  - `memory_quality`: scoring and analysis (`rate/get/analyze`).
+- Graph and ingestion:
+  - `memory_graph`: graph queries (`connected/path/subgraph`).
+  - `memory_harvest`: extract decisions, bugs, conventions from sessions.
+  - `memory_ingest`: import files/dirs into the store (PDF/TXT/MD/JSON).
+- System:
+  - `memory_health`: database health.
+  - `memory_stats`: cache and performance stats.
 
-### 快速示例
+### Quick examples
 
 ```text
-记住：<要保存的内容>
-我之前 <某个主题> 是什么？
+Remember: <content to save>
+What did we decide earlier about <topic>?
 ```
 
-### 手动控制工具示例
+### Manual tool invocation examples
 
 ```text
-@user-memory memory_store content="记住：数据库连接字符串是 postgresql://user:pass@localhost/db" metadata={"tags":"database,connection"}
-@user-memory memory_search query="数据库连接字符串" mode="semantic"
+@user-memory memory_store content="Remember: DB connection string is postgresql://user:pass@localhost/db" metadata={"tags":"database,connection"}
+@user-memory memory_search query="database connection string" mode="semantic"
 @user-memory memory_list page=1 page_size=20
 @user-memory memory_update content_hash="<content_hash>" updates={"tags":"database,connection,important"}
 @user-memory memory_delete content_hash="<content_hash>" dry_run=true
@@ -178,44 +178,44 @@
 
 ### `read_text_file`
 
-用途：读取指定路径文本文件内容。
+Purpose: read a text file at the given path.
 
 ```text
-帮我读取项目根目录下的 config.json 文件内容。
+Read the contents of config.json at the project root.
 ```
 
 ### `write_file`
 
-用途：创建新文件或覆盖已有文件。
+Purpose: create a new file or overwrite an existing one.
 
 ```text
-在我的桌面 Script 文件夹里，创建一个名为 hello.py 的文件，内容是打印 "Hello, World!"。
+On my Desktop Script folder, create hello.py that prints "Hello, World!".
 ```
 
 ### `edit_file`
 
-用途：基于内容精确编辑（支持干运行预览）。
+Purpose: precise content edits (supports dry-run preview).
 
 ```text
-将 hello.py 文件中的 "Hello, World!" 修改为 "Hello, MCP!"。
+Change "Hello, World!" in hello.py to "Hello, MCP!".
 ```
 
 ### `create_directory`
 
-用途：在允许目录内创建文件夹。
+Purpose: create a folder under allowed paths.
 
 ```text
-在 <目标路径> 下创建目录 <目录名>。
+Under <target path>, create directory <dir name>.
 ```
 
 ### `list_directory`
 
-用途：列出指定目录中的文件与子目录。
+Purpose: list files and subdirectories.
 
 ```text
-列出我桌面 AOSP 文件夹下所有文件和子文件夹的名字。
+List all file and subdirectory names under my Desktop AOSP folder.
 ```
 
-::: tip 说明
-此页面由 `Markdown[MCP]/MCP_use.md` 内容整理生成，用于部署访问。
+::: tip Note
+This page is generated from `Markdown[MCP]/MCP_use.md` for deployment.
 :::

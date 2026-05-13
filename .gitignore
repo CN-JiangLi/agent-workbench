@@ -17,7 +17,7 @@ cache
 .env.*.local
 
 # Visit counter persisted by server/visit-api.mjs
-server/data/home-visits.json
+# server/data/home-visits.json
 
 # Logs
 logs

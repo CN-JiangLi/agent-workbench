@@ -1,7 +1,7 @@
 # Simulated run: agent executes Full-Workflow once
 
 > **User request** (short, under-specified): “Add a short note to MCP docs: tool calls must be written clearly.”  
-> Routing per [`/en/agentic-workflow/full-workflow`](/en/agentic-workflow/full-workflow): **P0 → P1 → P2 → P3** and **observability**.
+> Routing per [`/agentic-workflow/full-workflow`](/agentic-workflow/full-workflow): **P0 → P1 → P2 → P3** and **observability**.
 
 ---
 
@@ -34,7 +34,7 @@
 
 **Intent**: Confirm the target file exists and is safe to edit before patching—avoid destructive overwrite.  
 **Location**: `filesystem` / `read_file` → `edit_file` (or equivalent)  
-**Parameter summary**: `path = pages/en/agentic-workflow/full-workflow.md`  
+**Parameter summary**: `path = pages/agentic-workflow/full-workflow.md`  
 **Status**: success (file exists; incremental edit, not full replace)
 
 **Write strategy (per rules)**

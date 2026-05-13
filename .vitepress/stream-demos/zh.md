@@ -1,7 +1,7 @@
 # 模拟执行记录：Agent 按 Full-Workflow 跑一遍
 
 > **用户原始需求**（偏短、缺约束）：「给 MCP 文档加一小段，说明工具调用要写清楚。」  
-> 路由依据：[`/agentic-workflow/full-workflow`](/agentic-workflow/full-workflow) 中的 **P0 → P1 → P2 → P3** 与 **可观测性** 小节。
+> 路由依据：[`/zh/agentic-workflow/full-workflow`](/zh/agentic-workflow/full-workflow) 中的 **P0 → P1 → P2 → P3** 与 **可观测性** 小节。
 
 ---
 
@@ -34,7 +34,7 @@
 
 **意图**：先确认目标文件存在且可改，再写入小节，避免覆盖误伤。  
 **定位**：`filesystem` / `read_file` → `edit_file`（或等价）  
-**参数摘要**：`path = pages/agentic-workflow/full-workflow.md`  
+**参数摘要**：`path = pages/zh/agentic-workflow/full-workflow.md`  
 **状态**：成功（文件存在，采用增量编辑而非整文件覆盖）
 
 **写入策略（与规则对齐）**

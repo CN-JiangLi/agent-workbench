@@ -7,6 +7,8 @@ import { useLocalePath } from "../utils/locale-path";
 const { isDark, theme, lang } = useData();
 const { localePath } = useLocalePath();
 
+/** loading → waiting for API; ok → have count; error → API unreachable / wrong origin */
+const visitPhase = ref<"loading" | "ok" | "error">("loading");
 const visitCount = ref<number | null>(null);
 
 function visitsEndpoint(): string {
@@ -18,27 +20,44 @@ function visitsEndpoint(): string {
 /** GET ?inc=1：静态/CDN（如 EdgeOne）常对 POST 返回 405，用 GET 递增并配合 no-store 降低缓存计数。 */
 function visitsIncrementUrl(): string {
   const path = visitsEndpoint();
-  const u = path.startsWith("http://") || path.startsWith("https://")
-    ? new URL(path)
-    : new URL(path, window.location.origin);
+  const u =
+    path.startsWith("http://") || path.startsWith("https://")
+      ? new URL(path)
+      : new URL(path, window.location.origin);
   u.searchParams.set("inc", "1");
   return u.toString();
 }
 
 onMounted(async () => {
+  visitPhase.value = "loading";
+  visitCount.value = null;
   try {
     const res = await fetch(visitsIncrementUrl(), {
       method: "GET",
       cache: "no-store",
       headers: { Accept: "application/json" },
+      mode: "cors",
     });
-    if (!res.ok) return;
-    const data = (await res.json()) as { count?: unknown };
+    if (!res.ok) {
+      visitPhase.value = "error";
+      return;
+    }
+    const raw = await res.text();
+    let data: { count?: unknown };
+    try {
+      data = JSON.parse(raw) as { count?: unknown };
+    } catch {
+      visitPhase.value = "error";
+      return;
+    }
     if (typeof data.count === "number" && Number.isFinite(data.count) && data.count >= 0) {
       visitCount.value = Math.floor(data.count);
+      visitPhase.value = "ok";
+      return;
     }
+    visitPhase.value = "error";
   } catch {
-    /* API offline or blocked */
+    visitPhase.value = "error";
   }
 });
 
@@ -94,6 +113,10 @@ const copy = computed(() =>
         terms: "Terms",
         discord: "Discord",
         visitBadge: "Home visits",
+        visitLoading: "…",
+        visitUnavailable: "—",
+        visitUnavailableTitle:
+          "Counter API unreachable. Deploy visit-handler + route GET /api/visits?inc=1, or set VITE_VISIT_API_URL before build.",
       }
     : {
         navAria: "主导航",
@@ -128,6 +151,10 @@ const copy = computed(() =>
         terms: "条款",
         discord: "Discord",
         visitBadge: "首页访问",
+        visitLoading: "…",
+        visitUnavailable: "—",
+        visitUnavailableTitle:
+          "计数接口不可用：请在 EdgeOne 将 /api/visits 回源到 Node（visit-handler），或在构建前设置 VITE_VISIT_API_URL 指向已部署的计数域名。",
       }
 );
 
@@ -251,12 +278,23 @@ function toggleDark() {
     <footer class="stitch-footer">
       <div class="stitch-footer__inner">
         <span class="stitch-footer__copy">{{ copy.footerCopy }}</span>
-        <span
-          v-if="visitCount !== null"
-          class="stitch-footer__visits"
-          aria-live="polite"
-        >
-          {{ copy.visitBadge }} · {{ visitDisplay }}
+        <span class="stitch-footer__visits" aria-live="polite">
+          <span class="stitch-footer__visits-label">{{ copy.visitBadge }}</span>
+          <span class="stitch-footer__visits-sep" aria-hidden="true"> · </span>
+          <span
+            v-if="visitPhase === 'loading'"
+            class="stitch-footer__visits-value stitch-footer__visits-value--muted"
+            >{{ copy.visitLoading }}</span
+          >
+          <span v-else-if="visitPhase === 'ok'" class="stitch-footer__visits-value">{{
+            visitDisplay
+          }}</span>
+          <abbr
+            v-else
+            class="stitch-footer__visits-value stitch-footer__visits-value--muted"
+            :title="copy.visitUnavailableTitle"
+            >{{ copy.visitUnavailable }}</abbr
+          >
         </span>
         <div class="stitch-footer__links">
           <a class="stitch-footer__link" href="#">{{ copy.privacy }}</a>
@@ -683,6 +721,20 @@ function toggleDark() {
   letter-spacing: 0.02em;
   color: var(--stitch-on-surface-variant);
   white-space: nowrap;
+}
+
+.stitch-footer__visits-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.stitch-footer__visits-value--muted {
+  opacity: 0.65;
+  cursor: help;
+}
+
+.stitch-footer__visits abbr.stitch-footer__visits-value {
+  text-decoration: none;
+  border: none;
 }
 
 .stitch-footer__links {

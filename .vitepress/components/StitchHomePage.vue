@@ -1,15 +1,88 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useData, withBase } from "vitepress";
+import { useData } from "vitepress";
 import AgenticWorkflowHomeDemo from "./AgenticWorkflowHomeDemo.vue";
+import { useLocalePath } from "../utils/locale-path";
 
-const { isDark, theme } = useData();
+const { isDark, theme, lang } = useData();
+const { localePath } = useLocalePath();
 
 const githubHref = computed(() => {
   const links = theme.value.socialLinks ?? [];
   const gh = links.find((l) => l.icon === "github");
   return typeof gh?.link === "string" ? gh.link : "https://github.com/CN-JiangLi";
 });
+
+const copy = computed(() =>
+  lang.value.toLowerCase().startsWith("en")
+    ? {
+        navAria: "Primary",
+        navDoc: "Documentation",
+        navHandbook: "MCP handbook",
+        navWorkflow: "Agentic workflow",
+        navExamples: "Examples",
+        toggleTheme: "Toggle color mode",
+        github: "Source code on GitHub",
+        quickStart: "Quick start",
+        heroTitle: "MCP documentation hub",
+        heroTagline:
+          "Local AI engineering for agents: RAG, tool use, and agentic workflows.",
+        ctaPrimary: "Quick start",
+        ctaSecondary: "Open MCP handbook",
+        featAria: "Highlights",
+        feat1Title: "Standardized flows",
+        feat1Text: "Build stable, predictable agent execution pipelines.",
+        feat2Title: "Scenario playbooks",
+        feat2Text: "Best practices and references for real product workflows.",
+        feat3Title: "Maintainable docs",
+        feat3Text: "Markdown-first with streaming render for freshness and interactivity.",
+        wfTitle: "Agentic workflow · streaming demo",
+        wfDescBefore: "Below,",
+        wfDescKbd: "markstream-vue",
+        wfDescMid: "typewriter-renders",
+        wfDescCode: ".vitepress/stream-demos/en.md",
+        wfDescAfter: "(rules in",
+        wfDescLink: "Full-Workflow",
+        wfDescClose: ").",
+        footerCopy: "© 2024 Ai Workbench Agent. Built for the agentic future.",
+        privacy: "Privacy",
+        terms: "Terms",
+        discord: "Discord",
+      }
+    : {
+        navAria: "主导航",
+        navDoc: "文档",
+        navHandbook: "MCP 使用手册",
+        navWorkflow: "Agentic 工作流",
+        navExamples: "示例",
+        toggleTheme: "切换深色/浅色模式",
+        github: "在 GitHub 上查看源码",
+        quickStart: "快速开始",
+        heroTitle: "MCP 使用文档中心",
+        heroTagline: "面向 Agent 的本地 AI 工程化增强体系 ( RAG + Tool Use + Agentic Workflow )。",
+        ctaPrimary: "快速开始",
+        ctaSecondary: "查看 MCP 手册",
+        featAria: "亮点",
+        feat1Title: "标准化流程",
+        feat1Text: "构建稳定、可预测的 Agent 运行管线。",
+        feat2Title: "场景化范例",
+        feat2Text: "提供多种实际业务场景的最佳实践与实现参考。",
+        feat3Title: "可维护文档体系",
+        feat3Text: "基于 Markdown 的流式渲染，保证文档时效与互动性。",
+        wfTitle: "Agentic 工作流 · 流式演示",
+        wfDescBefore: "下方由",
+        wfDescKbd: "markstream-vue",
+        wfDescMid: "打字机渲染",
+        wfDescCode: ".vitepress/stream-demos/zh.md",
+        wfDescAfter: "( 规则见",
+        wfDescLink: "Full-Workflow",
+        wfDescClose: " )。",
+        footerCopy: "© 2024 Ai Workbench Agent. Built for the agentic future.",
+        privacy: "隐私",
+        terms: "条款",
+        discord: "Discord",
+      },
+);
 
 function toggleDark() {
   if (typeof isDark.value === "boolean") {
@@ -20,35 +93,45 @@ function toggleDark() {
 
 <template>
   <div class="stitch-home">
-    <nav class="stitch-nav" aria-label="Primary">
+    <nav class="stitch-nav" :aria-label="copy.navAria">
       <div class="stitch-nav__inner">
         <div class="stitch-nav__left">
           <span class="stitch-nav__brand">
             <span class="stitch-text-gradient">Ai Workbench.Agent</span>
           </span>
           <div class="stitch-nav__links">
-            <a class="stitch-nav__link" :href="withBase('/mcp/mcp-handbook')">Documentation</a>
-            <a class="stitch-nav__link" :href="withBase('/mcp/mcp-handbook')">MCP Handbook</a>
-            <a class="stitch-nav__link" :href="withBase('/agentic-workflow/full-workflow')"
-              >Agentic Workflow</a
-            >
-            <a class="stitch-nav__link" :href="withBase('/examples/mcp-workflow-raw')">Examples</a>
+            <a class="stitch-nav__link" :href="localePath('/mcp/mcp-handbook')">{{ copy.navDoc }}</a>
+            <a class="stitch-nav__link" :href="localePath('/mcp/mcp-handbook')">{{ copy.navHandbook }}</a>
+            <a class="stitch-nav__link" :href="localePath('/agentic-workflow/full-workflow')">{{
+              copy.navWorkflow
+            }}</a>
+            <a class="stitch-nav__link" :href="localePath('/examples/mcp-workflow-raw')">{{
+              copy.navExamples
+            }}</a>
           </div>
         </div>
         <div class="stitch-nav__actions">
           <button
             type="button"
             class="stitch-icon-btn"
-            aria-label="Toggle color mode"
+            :aria-label="copy.toggleTheme"
             @click="toggleDark"
           >
             <span class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
           </button>
-          <a class="stitch-icon-btn" :href="githubHref" rel="noreferrer noopener" target="_blank" aria-label="Source code on GitHub">
+          <a
+            class="stitch-icon-btn"
+            :href="githubHref"
+            rel="noreferrer noopener"
+            target="_blank"
+            :aria-label="copy.github"
+          >
             <span class="material-symbols-outlined" aria-hidden="true">code</span>
           </a>
-          <a class="stitch-btn stitch-btn--primary stitch-nav__cta" :href="withBase('/quick-start/quick-start')"
-            >Quick Start</a
+          <a
+            class="stitch-btn stitch-btn--primary stitch-nav__cta"
+            :href="localePath('/quick-start/quick-start')"
+            >{{ copy.quickStart }}</a
           >
         </div>
       </div>
@@ -56,51 +139,58 @@ function toggleDark() {
 
     <main class="stitch-main">
       <section class="stitch-hero">
-        <h1 class="stitch-hero__subtitle">MCP 使用文档中心</h1>
+        <h1 class="stitch-hero__subtitle">{{ copy.heroTitle }}</h1>
         <p class="stitch-hero__tagline">
-          面向 Agent 的本地 AI 工程化增强体系 ( RAG + Tool Use + Agentic Workflow )。
+          {{ copy.heroTagline }}
         </p>
         <div class="stitch-hero__actions">
-          <a class="stitch-btn stitch-btn--primary stitch-btn--lg" :href="withBase('/quick-start/quick-start')">
-            快速开始
+          <a
+            class="stitch-btn stitch-btn--primary stitch-btn--lg"
+            :href="localePath('/quick-start/quick-start')"
+          >
+            {{ copy.ctaPrimary }}
           </a>
-          <a class="stitch-btn stitch-btn--glass stitch-btn--lg" :href="withBase('/mcp/mcp-handbook')">
-            查看 MCP 手册
+          <a class="stitch-btn stitch-btn--glass stitch-btn--lg" :href="localePath('/mcp/mcp-handbook')">
+            {{ copy.ctaSecondary }}
           </a>
         </div>
       </section>
 
-      <section class="stitch-features" aria-label="Highlights">
+      <section class="stitch-features" :aria-label="copy.featAria">
         <div class="stitch-feature-card">
           <div class="stitch-feature-card__icon">
             <span class="material-symbols-outlined" aria-hidden="true">account_tree</span>
           </div>
-          <h3 class="stitch-feature-card__title">标准化流程</h3>
-          <p class="stitch-feature-card__text">构建稳定、可预测的 Agent 运行管线。</p>
+          <h3 class="stitch-feature-card__title">{{ copy.feat1Title }}</h3>
+          <p class="stitch-feature-card__text">{{ copy.feat1Text }}</p>
         </div>
         <div class="stitch-feature-card">
           <div class="stitch-feature-card__icon">
             <span class="material-symbols-outlined" aria-hidden="true">extension</span>
           </div>
-          <h3 class="stitch-feature-card__title">场景化范例</h3>
-          <p class="stitch-feature-card__text">提供多种实际业务场景的最佳实践与实现参考。</p>
+          <h3 class="stitch-feature-card__title">{{ copy.feat2Title }}</h3>
+          <p class="stitch-feature-card__text">{{ copy.feat2Text }}</p>
         </div>
         <div class="stitch-feature-card">
           <div class="stitch-feature-card__icon">
             <span class="material-symbols-outlined" aria-hidden="true">library_books</span>
           </div>
-          <h3 class="stitch-feature-card__title">可维护文档体系</h3>
-          <p class="stitch-feature-card__text">基于 Markdown 的流式渲染，保证文档时效与互动性。</p>
+          <h3 class="stitch-feature-card__title">{{ copy.feat3Title }}</h3>
+          <p class="stitch-feature-card__text">{{ copy.feat3Text }}</p>
         </div>
       </section>
 
       <section class="stitch-workflow" aria-labelledby="stitch-workflow-heading">
         <div class="stitch-workflow__intro">
-          <h2 id="stitch-workflow-heading" class="stitch-workflow__title">Agentic 工作流 · 流式演示</h2>
+          <h2 id="stitch-workflow-heading" class="stitch-workflow__title">{{ copy.wfTitle }}</h2>
           <p class="stitch-workflow__desc">
-            下方由 <span class="stitch-workflow__kbd">markstream-vue</span> 打字机渲染
-            <code class="stitch-code">pages/home/agentic-workflow-stream-demo.md</code> ( 规则见
-            <a class="stitch-link" :href="withBase('/agentic-workflow/full-workflow')">Full-Workflow</a> )。
+            {{ copy.wfDescBefore }} <span class="stitch-workflow__kbd">{{ copy.wfDescKbd }}</span>
+            {{ copy.wfDescMid }}
+            <code class="stitch-code">{{ copy.wfDescCode }}</code> {{ copy.wfDescAfter }}
+            <a class="stitch-link" :href="localePath('/agentic-workflow/full-workflow')">{{
+              copy.wfDescLink
+            }}</a
+            >{{ copy.wfDescClose }}
           </p>
         </div>
 
@@ -113,12 +203,14 @@ function toggleDark() {
 
     <footer class="stitch-footer">
       <div class="stitch-footer__inner">
-        <span class="stitch-footer__copy">© 2024 Ai Workbench Agent. Built for the agentic future.</span>
+        <span class="stitch-footer__copy">{{ copy.footerCopy }}</span>
         <div class="stitch-footer__links">
-          <a class="stitch-footer__link" href="#">Privacy</a>
-          <a class="stitch-footer__link" href="#">Terms</a>
-          <a class="stitch-footer__link" :href="githubHref" rel="noreferrer noopener" target="_blank">GitHub</a>
-          <a class="stitch-footer__link" href="#">Discord</a>
+          <a class="stitch-footer__link" href="#">{{ copy.privacy }}</a>
+          <a class="stitch-footer__link" href="#">{{ copy.terms }}</a>
+          <a class="stitch-footer__link" :href="githubHref" rel="noreferrer noopener" target="_blank"
+            >GitHub</a
+          >
+          <a class="stitch-footer__link" href="#">{{ copy.discord }}</a>
         </div>
       </div>
     </footer>

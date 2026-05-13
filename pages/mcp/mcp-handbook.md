@@ -2,14 +2,14 @@
 
 源文档：`Markdown[MCP]/MCP_use.md`
 
-## 使用原则
+## 使用原则 {#使用原则}
 
 - 优先说明业务目标，再指定工具与参数。
 - 工具名、参数名、命令统一使用反引号。
 - 占位符统一使用语义化格式，如 `<接口名>`、`<query>`。
 - 示例默认可复制，按需替换占位符即可执行。
 
-## Superpowers
+## Superpowers {#superpowers}
 
 ### `brainstorming`（构思与设计）
 
@@ -74,7 +74,7 @@
 请用 finishing-a-development-branch 帮我完成这个分支的收尾流程。
 ```
 
-## Prompt Optimizer
+## Prompt Optimizer {#prompt-optimizer}
 
 ### 第 1 轮：提交原始提示词
 
@@ -94,7 +94,7 @@
 请继续调用 promptenhancer，optimizedPrompt="<按第一轮指南优化后的提示词>"
 ```
 
-## Apifox
+## Apifox {#apifox}
 
 ### 刷新项目 OAS
 
@@ -123,7 +123,7 @@
 我需要在用户信息返回中增加 avatar 字段，请根据现有数据模型告诉我需要同步修改哪些代码。
 ```
 
-## Memory
+## Memory {#memory}
 
 ### 常用能力
 
@@ -174,7 +174,7 @@
 @user-memory memory_stats
 ```
 
-## FileSystem
+## FileSystem {#filesystem}
 
 ### `read_text_file`
 

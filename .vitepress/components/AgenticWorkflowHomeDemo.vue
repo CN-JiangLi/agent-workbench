@@ -1,18 +1,36 @@
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { useData } from "vitepress";
 import MarkdownRender from "markstream-vue";
 import "markstream-vue/index.css";
-import demoSource from "../../pages/home/agentic-workflow-stream-demo.md?raw";
+import demoZh from "../stream-demos/zh.md?raw";
+import demoEn from "../stream-demos/en.md?raw";
+import { useLocalePath } from "../utils/locale-path";
 
-const { isDark } = useData();
+const { isDark, lang } = useData();
+const { localePath } = useLocalePath();
+
+const demoSource = computed(() =>
+  lang.value.toLowerCase().startsWith("en") ? demoEn : demoZh,
+);
+
+const labels = computed(() =>
+  lang.value.toLowerCase().startsWith("en")
+    ? {
+        replay: "Replay stream",
+        done: "(complete)",
+      }
+    : {
+        replay: "重新播放流",
+        done: "（已完成）",
+      },
+);
 
 const content = ref("");
 const streamingDone = ref(false);
 const panelRef = ref<HTMLElement | null>(null);
 let typewriterHandle: ReturnType<typeof setTimeout> | null = null;
 
-/** Keep streamed text in view inside the scrollable panel (first screen). */
 watch(content, async () => {
   await nextTick();
   const el = panelRef.value;
@@ -27,7 +45,6 @@ function clearTypewriter() {
   }
 }
 
-/** Pause after each shown character (typewriter rhythm). */
 function delayAfterChar(ch: string): number {
   const base = 11;
   if (ch === "\n") return base + 55;
@@ -37,12 +54,12 @@ function delayAfterChar(ch: string): number {
   return base;
 }
 
-/** Unicode-safe one-grapheme-at-a-time typing into markstream-vue */
 function startStream() {
   clearTypewriter();
   content.value = "";
   streamingDone.value = false;
-  const chars = Array.from(demoSource);
+  const text = String(demoSource.value);
+  const chars = Array.from(text);
   let i = 0;
 
   function step() {
@@ -59,6 +76,11 @@ function startStream() {
 
   typewriterHandle = window.setTimeout(step, 380);
 }
+
+watch(demoSource, () => {
+  if (typeof window === "undefined") return;
+  startStream();
+});
 
 onMounted(() => {
   startStream();
@@ -78,19 +100,29 @@ function replay() {
   <div class="aw-home-demo">
     <div class="aw-home-demo__toolbar">
       <p class="aw-home-demo__intro">
-        下面是一段<strong>模拟 AI 执行 Full-Workflow</strong> 时「边想边写」生成的 Markdown（独立文件
-        <code>pages/home/agentic-workflow-stream-demo.md</code>），由
-        <a href="https://markstream-vue.simonhe.me/" rel="noreferrer noopener" target="_blank"
-          >markstream-vue</a
-        >
-        在首页流式渲染。规则原文见
-        <a href="/agentic-workflow/full-workflow">Agentic Full-Workflow</a>。
+        <template v-if="lang.toLowerCase().startsWith('en')">
+          Below is <strong>simulated AI output for Full-Workflow</strong> as Markdown (file
+          <code>.vitepress/stream-demos/en.md</code>), streamed on the home page with
+          <a href="https://markstream-vue.simonhe.me/" rel="noreferrer noopener" target="_blank"
+            >markstream-vue</a
+          >. Canonical rules:
+          <a :href="localePath('/agentic-workflow/full-workflow')">Agentic Full-Workflow</a>.
+        </template>
+        <template v-else>
+          下面是一段<strong>模拟 AI 执行 Full-Workflow</strong> 时「边想边写」生成的 Markdown（独立文件
+          <code>.vitepress/stream-demos/zh.md</code>），由
+          <a href="https://markstream-vue.simonhe.me/" rel="noreferrer noopener" target="_blank"
+            >markstream-vue</a
+          >
+          在首页流式渲染。规则原文见
+          <a :href="localePath('/agentic-workflow/full-workflow')">Agentic Full-Workflow</a>。
+        </template>
       </p>
       <button type="button" class="aw-home-demo__replay" @click="replay">
         <span class="aw-home-demo__replay-icon material-symbols-outlined" aria-hidden="true">replay</span>
-        重新播放流
+        {{ labels.replay }}
       </button>
-      <span v-if="streamingDone" class="aw-home-demo__done">（已完成）</span>
+      <span v-if="streamingDone" class="aw-home-demo__done">{{ labels.done }}</span>
     </div>
     <div ref="panelRef" class="aw-home-demo__panel markstream-vue">
       <div class="aw-home-demo__stream-body">
@@ -99,11 +131,7 @@ function replay() {
           custom-id="mcp-docs-home-workflow-stream"
           :is-dark="isDark"
         />
-        <span
-          v-show="!streamingDone"
-          class="aw-home-demo__caret"
-          aria-hidden="true"
-        />
+        <span v-show="!streamingDone" class="aw-home-demo__caret" aria-hidden="true" />
       </div>
     </div>
   </div>

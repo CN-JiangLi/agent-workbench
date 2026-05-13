@@ -5,8 +5,9 @@
  * Env: VISIT_API_PORT (default 3948), VISIT_COUNTER_FILE (optional override path)
  *
  * Routes:
- *   GET  /api/visits       → { count }
- *   POST /api/visits       → increment, → { count }
+ *   GET  /api/visits           → { count } (read only)
+ *   GET  /api/visits?inc=1     → increment, → { count } (CDN / EdgeOne 友好，避免 POST 405)
+ *   POST /api/visits           → increment, → { count } (本地或支持 POST 的源站)
  */
 import fs from "node:fs/promises";
 import http from "node:http";
@@ -56,7 +57,7 @@ async function incrementCount() {
   });
 }
 
-/** Simple per-IP sliding window (POST only). */
+/** Simple per-IP sliding window (increment: POST or GET ?inc=1). */
 const rateWindowMs = 60_000;
 const rateMax = 120;
 const rateState = new Map();
@@ -80,15 +81,22 @@ function rateAllow(ip) {
 function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Accept",
   };
 }
 
-function sendJson(res, status, body) {
+/** Avoid edge/CDN caching visit counts (especially GET ?inc=1). */
+const noStoreHeaders = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+  Pragma: "no-cache",
+};
+
+function sendJson(res, status, body, extraHeaders = {}) {
   res.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
     ...corsHeaders(),
+    ...extraHeaders,
   });
   res.end(JSON.stringify(body));
 }
@@ -111,21 +119,38 @@ const server = http.createServer(async (req, res) => {
   const ip = req.socket.remoteAddress || "unknown";
 
   try {
+    /** HEAD（如 curl -I / 部分 CDN 探测）不写计数、不返回 body，避免误把 ?inc=1 当 GET 用。 */
+    if (req.method === "HEAD") {
+      res.writeHead(200, { ...corsHeaders(), ...noStoreHeaders });
+      res.end();
+      return;
+    }
     if (req.method === "GET") {
+      const wantInc =
+        url.searchParams.get("inc") === "1" || url.searchParams.get("increment") === "1";
+      if (wantInc) {
+        if (!rateAllow(ip)) {
+          sendJson(res, 429, { error: "rate_limited" }, noStoreHeaders);
+          return;
+        }
+        const count = await incrementCount();
+        sendJson(res, 200, { count }, noStoreHeaders);
+        return;
+      }
       const count = await readCount();
-      sendJson(res, 200, { count });
+      sendJson(res, 200, { count }, noStoreHeaders);
       return;
     }
     if (req.method === "POST") {
       if (!rateAllow(ip)) {
-        sendJson(res, 429, { error: "rate_limited" });
+        sendJson(res, 429, { error: "rate_limited" }, noStoreHeaders);
         return;
       }
       const count = await incrementCount();
-      sendJson(res, 200, { count });
+      sendJson(res, 200, { count }, noStoreHeaders);
       return;
     }
-    sendJson(res, 405, { error: "method_not_allowed" });
+    sendJson(res, 405, { error: "method_not_allowed" }, noStoreHeaders);
   } catch (e) {
     sendJson(res, 500, { error: "internal", message: String(e?.message || e) });
   }

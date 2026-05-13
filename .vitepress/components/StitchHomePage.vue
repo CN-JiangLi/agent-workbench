@@ -15,10 +15,21 @@ function visitsEndpoint(): string {
   return `${b.replace(/\/$/, "")}/api/visits`;
 }
 
+/** GET ?inc=1：静态/CDN（如 EdgeOne）常对 POST 返回 405，用 GET 递增并配合 no-store 降低缓存计数。 */
+function visitsIncrementUrl(): string {
+  const path = visitsEndpoint();
+  const u = path.startsWith("http://") || path.startsWith("https://")
+    ? new URL(path)
+    : new URL(path, window.location.origin);
+  u.searchParams.set("inc", "1");
+  return u.toString();
+}
+
 onMounted(async () => {
   try {
-    const res = await fetch(visitsEndpoint(), {
-      method: "POST",
+    const res = await fetch(visitsIncrementUrl(), {
+      method: "GET",
+      cache: "no-store",
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return;

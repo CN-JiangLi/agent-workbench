@@ -1,6 +1,6 @@
 import { defineConfig } from "vitepress";
 
-/** Prefix paths for the `zh` locale (VPLink does not auto-inject `/zh/` for theme nav/sidebar). */
+/** Prefix paths for the `zh` locale */
 function zhRoute(path: string): string {
   if (path === "/zh" || path.startsWith("/zh/")) {
     return path === "/zh" ? "/zh/" : path;
@@ -41,160 +41,78 @@ const sharedHead: [string, Record<string, string>][] = [
   ],
 ];
 
-/** Default locale (English): plain paths */
 const sidebarEn = [
   {
-    text: "MCP docs",
+    text: "Agent Workflow",
     collapsed: false,
     items: [
-      {
-        text: "MCP handbook",
-        link: "/mcp/mcp-handbook",
-        collapsed: true,
-        items: [
-          { text: "Usage principles", link: "/mcp/mcp-handbook#usage-principles" },
-          { text: "Superpowers", link: "/mcp/mcp-handbook#superpowers" },
-          { text: "Prompt Optimizer", link: "/mcp/mcp-handbook#prompt-optimizer" },
-          { text: "Apifox", link: "/mcp/mcp-handbook#apifox" },
-          { text: "Memory", link: "/mcp/mcp-handbook#memory" },
-          { text: "FileSystem", link: "/mcp/mcp-handbook#filesystem" },
-        ],
-      },
+      { text: "Workflow Core", link: "/agent-workflow/mcp-core" },
+      { text: "Scenario Routing", link: "/agent-workflow/mcp-routing" },
+      { text: "Prompt Optimization (P1)", link: "/agent-workflow/mcp-prompt-optimizer" },
+      { text: "Superpowers", link: "/agent-workflow/superpowers-triggers" },
     ],
   },
   {
-    text: "Agentic workflow",
+    text: "Serve Layer",
     collapsed: false,
     items: [
-      {
-        text: "Full-Workflow",
-        collapsed: true,
-        items: [
-          { text: "Overview", link: "/agentic-workflow/full-workflow" },
-          {
-            text: "Priority 0: conversation start",
-            link: "/agentic-workflow/full-workflow#p0-start",
-          },
-          {
-            text: "Priority 1: prompt optimization",
-            link: "/agentic-workflow/full-workflow#p1-prompt",
-          },
-          {
-            text: "Priority 2: auto-routing",
-            link: "/agentic-workflow/full-workflow#p2-routing",
-          },
-          {
-            text: "Priority 2.5: memory dedupe",
-            link: "/agentic-workflow/full-workflow#p25-dedupe",
-          },
-          {
-            text: "Priority 3: completion",
-            link: "/agentic-workflow/full-workflow#p3-completion",
-          },
-          {
-            text: "Clarification & fallback",
-            link: "/agentic-workflow/full-workflow#fallback-rules",
-          },
-          {
-            text: "Exception summary",
-            link: "/agentic-workflow/full-workflow#exception-summary",
-          },
-        ],
-      },
+      { text: "LightRAG", link: "/servers/lightrag" },
+      { text: "Codegraph", link: "/servers/codegraph" },
+      { text: "Headroom", link: "/servers/headroom" },
     ],
   },
   {
-    text: "Examples",
-    items: [{ text: "MCP Full-Workflow (fenced sample)", link: "/examples/mcp-workflow-raw" }],
+    text: "MCP Tools",
+    collapsed: false,
+    items: [
+      { text: "Overview", link: "/mcp-tools/" },
+      { text: "Host Setup", link: "/mcp-tools/host-setup" },
+      { text: "LightRAG MCP", link: "/mcp-tools/lightrag" },
+      { text: "Filesystem", link: "/mcp-tools/filesystem" },
+      { text: "Codegraph MCP", link: "/mcp-tools/codegraph" },
+      { text: "Headroom MCP", link: "/mcp-tools/headroom" },
+      { text: "Prompt Optimizer", link: "/mcp-tools/prompt-optimizer" },
+      { text: "Browser", link: "/mcp-tools/browser" },
+    ],
   },
 ];
 
-/** Secondary locale (简体中文): `/zh/` prefix on all theme links */
 const sidebarZh = [
   {
-    text: "MCP 文档",
+    text: "Agent 工作流",
     collapsed: false,
     items: [
-      {
-        text: "MCP 使用手册",
-        link: zhRoute("/mcp/mcp-handbook"),
-        collapsed: true,
-        items: [
-          { text: "使用原则", link: zhRoute("/mcp/mcp-handbook#使用原则") },
-          {
-            text: "Superpowers",
-            link: zhRoute("/mcp/mcp-handbook#superpowers"),
-          },
-          {
-            text: "Prompt Optimizer",
-            link: zhRoute("/mcp/mcp-handbook#prompt-optimizer"),
-          },
-          {
-            text: "Apifox",
-            link: zhRoute("/mcp/mcp-handbook#apifox"),
-          },
-          {
-            text: "Memory",
-            link: zhRoute("/mcp/mcp-handbook#memory"),
-          },
-          {
-            text: "FileSystem",
-            link: zhRoute("/mcp/mcp-handbook#filesystem"),
-          },
-        ],
-      },
+      { text: "工作流核心", link: zhRoute("/agent-workflow/mcp-core") },
+      { text: "场景路由", link: zhRoute("/agent-workflow/mcp-routing") },
+      { text: "Prompt 优化（P1）", link: zhRoute("/agent-workflow/mcp-prompt-optimizer") },
+      { text: "Superpowers", link: zhRoute("/agent-workflow/superpowers-triggers") },
     ],
   },
   {
-    text: "Agentic 工作流",
+    text: "Serve 服务类底层",
     collapsed: false,
     items: [
-      {
-        text: "Full-Workflow",
-        collapsed: true,
-        items: [
-          { text: "工作流首页", link: zhRoute("/agentic-workflow/full-workflow") },
-          {
-            text: "优先级 0：对话开始",
-            link: zhRoute("/agentic-workflow/full-workflow#p0-start"),
-          },
-          {
-            text: "优先级 1：Prompt 优化判断",
-            link: zhRoute("/agentic-workflow/full-workflow#p1-prompt"),
-          },
-          {
-            text: "优先级 2：场景自动路由",
-            link: zhRoute("/agentic-workflow/full-workflow#p2-routing"),
-          },
-          {
-            text: "优先级 2.5：记忆存储去重规则",
-            link: zhRoute("/agentic-workflow/full-workflow#p25-dedupe"),
-          },
-          {
-            text: "优先级 3：任务完成",
-            link: zhRoute("/agentic-workflow/full-workflow#p3-completion"),
-          },
-          {
-            text: "澄清与回退规则",
-            link: zhRoute("/agentic-workflow/full-workflow#fallback-rules"),
-          },
-          {
-            text: "异常处理汇总",
-            link: zhRoute("/agentic-workflow/full-workflow#exception-summary"),
-          },
-        ],
-      },
+      { text: "LightRAG", link: zhRoute("/servers/lightrag") },
+      { text: "Codegraph", link: zhRoute("/servers/codegraph") },
+      { text: "Headroom", link: zhRoute("/servers/headroom") },
     ],
   },
   {
-    text: "示例",
+    text: "MCP Tools",
+    collapsed: false,
     items: [
-      { text: "MCP Full-Workflow 原文渲染", link: zhRoute("/examples/mcp-workflow-raw") },
+      { text: "总览", link: zhRoute("/mcp-tools/") },
+      { text: "宿主配置", link: zhRoute("/mcp-tools/host-setup") },
+      { text: "LightRAG MCP", link: zhRoute("/mcp-tools/lightrag") },
+      { text: "Filesystem", link: zhRoute("/mcp-tools/filesystem") },
+      { text: "Codegraph MCP", link: zhRoute("/mcp-tools/codegraph") },
+      { text: "Headroom MCP", link: zhRoute("/mcp-tools/headroom") },
+      { text: "Prompt Optimizer", link: zhRoute("/mcp-tools/prompt-optimizer") },
+      { text: "Browser", link: zhRoute("/mcp-tools/browser") },
     ],
   },
 ];
 
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
   srcDir: "pages",
   outDir: "dist",
@@ -207,21 +125,19 @@ export default defineConfig({
       label: "English",
       lang: "en-US",
       title: "Ai Workbench",
-      description: "Internal MCP tooling and usage guidelines (English)",
+      description: "MCP agent workflow, services, and tools documentation",
       themeConfig: {
         outline: { level: [1, 3] },
         nav: [
           { text: "Home", link: "/" },
-          { text: "MCP handbook", link: "/mcp/mcp-handbook" },
-          { text: "Agentic workflow", link: "/agentic-workflow/full-workflow" },
-          { text: "Examples", link: "/examples/mcp-workflow-raw" },
+          { text: "Agent Workflow", link: "/agent-workflow/mcp-core" },
+          { text: "Serve Layer", link: "/servers/lightrag" },
+          { text: "MCP Tools", link: "/mcp-tools/" },
+          { text: "简体中文", link: "/zh/" },
         ],
         sidebar: sidebarEn,
         socialLinks: [
-          {
-            icon: "github",
-            link: "https://github.com/CN-JiangLi",
-          },
+          { icon: "github", link: "https://github.com/CN-JiangLi" },
         ],
       },
     },
@@ -230,21 +146,18 @@ export default defineConfig({
       lang: "zh-CN",
       link: "/zh/",
       title: "Ai Workbench",
-      description: "团队内部 MCP 工具与使用规范文档",
+      description: "团队 Agent 工作流、底层服务与 MCP 工具文档",
       themeConfig: {
         outline: { level: [1, 3] },
         nav: [
           { text: "首页", link: zhRoute("/") },
-          { text: "MCP 使用手册", link: zhRoute("/mcp/mcp-handbook") },
-          { text: "Agentic 工作流", link: zhRoute("/agentic-workflow/full-workflow") },
-          { text: "示例", link: zhRoute("/examples/mcp-workflow-raw") },
+          { text: "Agent 工作流", link: zhRoute("/agent-workflow/mcp-core") },
+          { text: "Serve 服务", link: zhRoute("/servers/lightrag") },
+          { text: "MCP Tools", link: zhRoute("/mcp-tools/") },
         ],
         sidebar: sidebarZh,
         socialLinks: [
-          {
-            icon: "github",
-            link: "https://github.com/CN-JiangLi",
-          },
+          { icon: "github", link: "https://github.com/CN-JiangLi" },
         ],
       },
     },

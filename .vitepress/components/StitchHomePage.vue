@@ -18,31 +18,31 @@ const copy = computed(() =>
     ? {
         navAria: "Primary",
         navDoc: "Documentation",
-        navHandbook: "MCP handbook",
-        navWorkflow: "Agentic workflow",
-        navExamples: "Examples",
+        navWorkflow: "Agent workflow",
+        navServers: "Serve layer",
+        navTools: "MCP Tools",
         toggleTheme: "Toggle color mode",
         github: "Source code on GitHub",
-        quickStart: "Quick start",
+        quickStart: "Agent workflow",
         heroTitle: "MCP documentation hub",
         heroTagline:
-          "Local AI engineering for agents: RAG, tool use, and agentic workflows.",
-        ctaPrimary: "Quick start",
-        ctaSecondary: "Open MCP handbook",
+          "Agent workflows, underlying services (LightRAG / Codegraph / Headroom), and MCP tool reference.",
+        ctaPrimary: "Agent workflow",
+        ctaSecondary: "MCP Tools",
         featAria: "Highlights",
-        feat1Title: "Standardized flows",
-        feat1Text: "Build stable, predictable agent execution pipelines.",
-        feat2Title: "Scenario playbooks",
-        feat2Text: "Best practices and references for real product workflows.",
-        feat3Title: "Maintainable docs",
-        feat3Text: "Markdown-first with streaming render for freshness and interactivity.",
-        wfTitle: "Agentic workflow · streaming demo",
+        feat1Title: "Agent workflow",
+        feat1Text: "P0→P3 decision tree, routing rules, and Superpowers triggers.",
+        feat2Title: "Serve layer",
+        feat2Text: "LightRAG, Codegraph, and Headroom installation and architecture.",
+        feat3Title: "MCP Tools",
+        feat3Text: "Tool reference aligned with workflow rules and host setup.",
+        wfTitle: "Workflow · streaming demo",
         wfDescBefore: "Below,",
         wfDescKbd: "markstream-vue",
         wfDescMid: "typewriter-renders",
         wfDescCode: ".vitepress/stream-demos/en.md",
-        wfDescAfter: "(rules in",
-        wfDescLink: "Full-Workflow",
+        wfDescAfter: "(full rules in",
+        wfDescLink: "Agent workflow",
         wfDescClose: ").",
         footerCopy: "© 2024 Ai Workbench Agent. Built for the agentic future.",
         privacy: "Privacy",
@@ -52,30 +52,30 @@ const copy = computed(() =>
     : {
         navAria: "主导航",
         navDoc: "文档",
-        navHandbook: "MCP 使用手册",
-        navWorkflow: "Agentic 工作流",
-        navExamples: "示例",
+        navWorkflow: "Agent 工作流",
+        navServers: "Serve 服务",
+        navTools: "MCP Tools",
         toggleTheme: "切换深色/浅色模式",
         github: "在 GitHub 上查看源码",
-        quickStart: "快速开始",
-        heroTitle: "MCP 使用文档中心",
-        heroTagline: "面向 Agent 的本地 AI 工程化增强体系 ( RAG + Tool Use + Agentic Workflow )。",
-        ctaPrimary: "快速开始",
-        ctaSecondary: "查看 MCP 手册",
+        quickStart: "Agent 工作流",
+        heroTitle: "MCP 文档中心",
+        heroTagline: "Agent 工作流、底层服务（LightRAG / Codegraph / Headroom）与 MCP 工具参考。",
+        ctaPrimary: "Agent 工作流",
+        ctaSecondary: "MCP Tools",
         featAria: "亮点",
-        feat1Title: "标准化流程",
-        feat1Text: "构建稳定、可预测的 Agent 运行管线。",
-        feat2Title: "场景化范例",
-        feat2Text: "提供多种实际业务场景的最佳实践与实现参考。",
-        feat3Title: "可维护文档体系",
-        feat3Text: "基于 Markdown 的流式渲染，保证文档时效与互动性。",
-        wfTitle: "Agentic 工作流 · 流式演示",
+        feat1Title: "Agent 工作流",
+        feat1Text: "P0→P3 决策树、场景路由规则与 Superpowers 触发。",
+        feat2Title: "Serve 服务类底层",
+        feat2Text: "LightRAG、Codegraph、Headroom 安装与架构说明。",
+        feat3Title: "MCP Tools",
+        feat3Text: "与工作流规则对齐的工具参考与宿主配置。",
+        wfTitle: "工作流 · 流式演示",
         wfDescBefore: "下方由",
         wfDescKbd: "markstream-vue",
         wfDescMid: "打字机渲染",
         wfDescCode: ".vitepress/stream-demos/zh.md",
-        wfDescAfter: "( 规则见",
-        wfDescLink: "Full-Workflow",
+        wfDescAfter: "( 完整规则见",
+        wfDescLink: "Agent 工作流",
         wfDescClose: " )。",
         footerCopy: "© 2024 Ai Workbench Agent. Built for the agentic future.",
         privacy: "隐私",
@@ -100,14 +100,13 @@ function toggleDark() {
             <span class="stitch-text-gradient">Ai Workbench.Agent</span>
           </span>
           <div class="stitch-nav__links">
-            <a class="stitch-nav__link" :href="localePath('/mcp/mcp-handbook')">{{ copy.navDoc }}</a>
-            <a class="stitch-nav__link" :href="localePath('/mcp/mcp-handbook')">{{ copy.navHandbook }}</a>
-            <a class="stitch-nav__link" :href="localePath('/agentic-workflow/full-workflow')">{{
+            <a class="stitch-nav__link" :href="localePath('/agent-workflow/mcp-core')">{{
               copy.navWorkflow
             }}</a>
-            <a class="stitch-nav__link" :href="localePath('/examples/mcp-workflow-raw')">{{
-              copy.navExamples
+            <a class="stitch-nav__link" :href="localePath('/servers/lightrag')">{{
+              copy.navServers
             }}</a>
+            <a class="stitch-nav__link" :href="localePath('/mcp-tools/')">{{ copy.navTools }}</a>
           </div>
         </div>
         <div class="stitch-nav__actions">
@@ -130,7 +129,7 @@ function toggleDark() {
           </a>
           <a
             class="stitch-btn stitch-btn--primary stitch-nav__cta"
-            :href="localePath('/quick-start/quick-start')"
+            :href="localePath('/agent-workflow/mcp-core')"
             >{{ copy.quickStart }}</a
           >
         </div>
@@ -146,11 +145,11 @@ function toggleDark() {
         <div class="stitch-hero__actions">
           <a
             class="stitch-btn stitch-btn--primary stitch-btn--lg"
-            :href="localePath('/quick-start/quick-start')"
+            :href="localePath('/agent-workflow/mcp-core')"
           >
             {{ copy.ctaPrimary }}
           </a>
-          <a class="stitch-btn stitch-btn--glass stitch-btn--lg" :href="localePath('/mcp/mcp-handbook')">
+          <a class="stitch-btn stitch-btn--glass stitch-btn--lg" :href="localePath('/mcp-tools/')">
             {{ copy.ctaSecondary }}
           </a>
         </div>
@@ -187,7 +186,7 @@ function toggleDark() {
             {{ copy.wfDescBefore }} <span class="stitch-workflow__kbd">{{ copy.wfDescKbd }}</span>
             {{ copy.wfDescMid }}
             <code class="stitch-code">{{ copy.wfDescCode }}</code> {{ copy.wfDescAfter }}
-            <a class="stitch-link" :href="localePath('/agentic-workflow/full-workflow')">{{
+            <a class="stitch-link" :href="localePath('/agent-workflow/mcp-core')">{{
               copy.wfDescLink
             }}</a
             >{{ copy.wfDescClose }}

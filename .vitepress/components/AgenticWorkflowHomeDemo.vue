@@ -46,11 +46,12 @@ function clearTypewriter() {
 }
 
 function delayAfterChar(ch: string): number {
-  const base = 11;
-  if (ch === "\n") return base + 55;
-  if ("。.！？!?".includes(ch)) return base + 85;
-  if ("，、；：,;:)]}>".includes(ch) || ch === "'" || ch === '"') return base + 38;
-  if (ch === " ") return base + 6;
+  const base = 8;
+  if (ch === "\n") return base + 28;
+  if ("。.！？!?".includes(ch)) return base + 42;
+  if ("，、；：,;:)]}>".includes(ch) || ch === "'" || ch === '"') return base + 18;
+  if (ch === " ") return base + 4;
+  if (ch === "|" || ch === "`") return base + 2;
   return base;
 }
 
@@ -105,8 +106,8 @@ function replay() {
           <code>.vitepress/stream-demos/en.md</code>), streamed on the home page with
           <a href="https://markstream-vue.simonhe.me/" rel="noreferrer noopener" target="_blank"
             >markstream-vue</a
-          >. Canonical rules:
-          <a :href="localePath('/agentic-workflow/full-workflow')">Agentic Full-Workflow</a>.
+          >.           Canonical rules:
+          <a :href="localePath('/agent-workflow/mcp-core')">Agent Workflow</a>.
         </template>
         <template v-else>
           下面是一段<strong>模拟 AI 执行 Full-Workflow</strong> 时「边想边写」生成的 Markdown（独立文件
@@ -114,8 +115,8 @@ function replay() {
           <a href="https://markstream-vue.simonhe.me/" rel="noreferrer noopener" target="_blank"
             >markstream-vue</a
           >
-          在首页流式渲染。规则原文见
-          <a :href="localePath('/agentic-workflow/full-workflow')">Agentic Full-Workflow</a>。
+          在首页流式渲染。          规则原文见
+          <a :href="localePath('/agent-workflow/mcp-core')">Agent 工作流</a>。
         </template>
       </p>
       <button type="button" class="aw-home-demo__replay" @click="replay">
@@ -192,6 +193,7 @@ function replay() {
   border-radius: 12px;
   padding: 1rem 1.25rem 1.25rem;
   background: var(--vp-c-bg-soft);
+  max-height: min(72vh, 640px);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
